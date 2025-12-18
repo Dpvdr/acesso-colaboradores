@@ -1,4 +1,3 @@
-%%writefile app.py
 from flask import Flask, request, render_template_string, abort
 import os
 
@@ -111,3 +110,4 @@ def login():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
+
